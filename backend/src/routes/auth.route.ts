@@ -2,7 +2,7 @@ import express, { Request, Response } from 'express';
 import { isAuthenticated, login, logout, register,
      resetPassword, sendResetOtp, sendVerifyOtp, verifiedEmail } from '../controller/auth.controller';
 import { userAuth } from '../middleware/userAuth';
-import { googleAuth, googleCallback } from '../controller/tpAuth.controller';
+import { facebookAuth, facebookCallback, googleAuth, googleCallback } from '../controller/tpAuth.controller';
 import passport from 'passport';
 export const router = express.Router()
 
@@ -19,4 +19,10 @@ router.get('/google', googleAuth)
 router.get('/google/callback', 
     passport.authenticate('google', { failureRedirect: '/login' }), 
     googleCallback
+)
+
+router.get('/facebook', facebookAuth)
+router.get('/facebook/callback', 
+    passport.authenticate('facebook', { failureRedirect: '/login' }), 
+    facebookCallback
 )
