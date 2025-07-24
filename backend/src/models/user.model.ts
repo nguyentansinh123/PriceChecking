@@ -20,7 +20,9 @@ const userSchema = new mongoose.Schema({
     },
     password: {
         type: String,
-        required: [true, 'Password is required'],
+        required: function(this: any) {
+            return !this.isOAuthUser;
+        },
         minlength: [6, 'Password must be at least 6 characters long'],
         maxlength: [128, 'Password cannot exceed 128 characters']
     },
@@ -47,6 +49,23 @@ const userSchema = new mongoose.Schema({
         type: Number,
         default: 0,
         min: [0, 'Reset OTP expiry time cannot be negative']
+    },
+    isOAuthUser: {
+        type: Boolean,
+        default: false
+    },
+    oauthProvider: {
+        type: String,
+        enum: ['google', 'facebook', 'twitter', null],
+        default: null
+    },
+    oauthId: {
+        type: String,
+        default: null
+    },
+    avatar: {
+        type: String,
+        default: null
     }
 }, {
     timestamps: true 
