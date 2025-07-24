@@ -33,6 +33,7 @@ connectDB();
 app.use('/api/v1/auth', AuthRoute);
 
 app.get("/", (req, res) => {
+  console.log('from home', req.user)
   res.send(`
     <a href='/api/v1/auth/google'>Login with Google</a><br>
     <a href='/api/v1/auth/facebook'>Login with Facebook</a><br>

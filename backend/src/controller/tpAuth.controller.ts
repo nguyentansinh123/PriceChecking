@@ -17,6 +17,9 @@ passport.use(new GoogleStrategy({
     try {
         let user = await UserModel.findOne({ email: profile.emails?.[0]?.value });
 
+        console.log("google send::::",profile);
+        
+
         if (user) {
             if (!user.isOAuthUser && user.password) {
                 return done(new Error('Account already exists with email and password. Please login with your credentials.'), false);
@@ -166,6 +169,8 @@ passport.use(new FacebookStrategy({
 }));
 
 passport.serializeUser((user: any, done) => {
+    console.log('from serializeUser', user);
+    
     done(null, user._id);
 });
 
@@ -192,7 +197,9 @@ export const githubAuth = passport.authenticate('github', {
 
 export const googleCallback = (req: Request, res: Response) => {
     try {
+        console.log(req.session)
         const user = req.user as any;
+        console.log('from google callback', user)
         
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET as string, {expiresIn: '7d'});
 
