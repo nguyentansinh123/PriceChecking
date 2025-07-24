@@ -25,7 +25,11 @@ export const register = async (req: Request, res: Response) => {
         if(existingUser) {
             return res.json({success: false, message:"Email already exists"})
         }
-        const user = new UserModel({name, email, password: hashedPassword}) 
+        
+        const idx = Math.floor(Math.random() * 100) + 1;
+        const avatarLink = `https://avatar.iran.liara.run/public/${idx}`
+        const user = new UserModel({name, email, password: hashedPassword, avatar:avatarLink }) 
+
         await user.save()
 
         const token = jwt.sign({id: user._id}, process.env.JWT_SECRET as string, {expiresIn: '7d'})
