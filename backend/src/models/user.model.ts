@@ -56,7 +56,7 @@ const userSchema = new mongoose.Schema({
     },
     oauthProvider: {
         type: String,
-        enum: ['google', 'facebook', 'twitter', null],
+        enum: ['google', 'facebook', 'github', null],
         default: null
     },
     oauthId: {
