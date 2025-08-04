@@ -1,0 +1,188 @@
+import React from "react";
+import logo from '../../assets/logo.png';
+import analysis from '../../assets/analysis.png';
+import stats from '../../assets/stats.png';
+import business from '../../assets/business.png';
+import financial from '../../assets/financial.png';
+import digital from '../../assets/digital.png';
+import world from '../../assets/world.png';
+import woman from '../../assets/woman.png';
+import dairy from '../../assets/dairy.png';
+import vegetables from '../../assets/vegetables.png';
+import spices from '../../assets/spices.png';
+import honey from '../../assets/honey.png';
+import tick from '../../assets/tick.png';
+import chart from '../../assets/chart.png';
+import quote from '../../assets/double-quote.png';
+import LoginPage from "./LoginPage"; 
+
+const HomePage = () => {
+  return (
+    <div className="font-sans text-gray-800">
+      
+      {/* Header */}
+      <header className="flex justify-between items-center px-20 py-4 shadow-sm bg-gray-50">
+        <div className="flex items-center space-x-4">
+          <img src={logo} alt="PCompare Logo" className="h-9" />
+          <span className="font-bold text-xl text-lg">PCompare</span>
+        </div>
+        <nav className="space-x-10 text-md font-semibold">
+          <a href="#" className="hover:text-blue-600">Home</a>
+          <a href="#" className="hover:text-blue-600">About Us</a>
+          <a href="#" className="hover:text-blue-600">Service</a>
+          <a href="#" className="hover:text-blue-600">Contact Us</a>
+          <button 
+            className="bg-[#0c1c64] text-white px-8 py-2 rounded-md"
+            onClick={() => window.location.href = '/login'}> Login
+          </button>
+        </nav>
+      </header>
+
+      {/* Main Section */}
+      <section className="flex flex-col md:flex-row items-baseline-start p-10 bg-gray-50">
+
+        <div className="flex-1 flex flex-col space-y-6 pt-18">
+          <h1 className="text-6xl font-bold leading-tight">
+            Let your <span className="text-blue-600">prices</span> being low
+          </h1>
+          <p className="text-gray-500 max-w-md">
+            Get fresh groceries online without stepping out to make delicious food with the freshest ingredients.
+          </p>
+
+          <div className="grid grid-cols-2 gap-4 text-sm text-gray-600 max-w-md">
+            <span className="flex items-center space-x-2">
+              <img src={tick} alt="tick" className="h-4" /> <span>Fresh Vegetables</span>
+            </span>
+            <span className="flex items-center space-x-2">
+              <img src={tick} alt="tick" className="h-4" /> <span>100% Guarantee</span>
+            </span>
+            <span className="flex items-center space-x-2">
+              <img src={tick} alt="tick" className="h-4" /> <span>Cash on Delivery</span>
+            </span>
+            <span className="flex items-center space-x-2">
+              <img src={tick} alt="tick" className="h-4" /> <span>Fast Delivery</span>
+            </span>
+          </div>
+
+
+          <div className="mt-20 self-end shadow-lg bg-white p-3">
+            <div className="flex items-center justify-between px-4 py-3 w-full gap-4">
+              <img src={stats} alt="Stats Icon" className="h-15 w-15 justify-center -ml-15 mr-3 mt-auto" />
+              <div>
+                <p className="text-gray-500 text-sm">Monthly Stats</p>
+                <p className="font-bold text-lg">+25%</p>
+              </div>
+              <img src={chart} alt="Chart" className="h-15 ml-5" />
+            </div>
+          </div>
+
+        </div>
+        
+        <div className="flex-1 flex flex-col items-end justify-end relative mt-10 md:mt-0 z-0">
+          <img src={world} alt="World Map" className="w-full max-w-[600px] mx-auto mr-80" />
+
+          <div className="-mt-30 bg-white/50 backdrop-blur-sm shadow-md p-6 rounded-lg text-md w-92 max-w-full z-10">
+            <img src={quote} alt="Quote" className="h-6 mb-4" />
+            <p>
+              For the past few years, I’ve had a hard time finding the right place for skin care to deal with my complicated skin condition, thank God I found GlowQueen to treat my skin
+            </p>
+            <p className="mt-3 font-bold text-blue-900">Tamara Jules</p>
+          </div>
+        </div>
+      </section>
+
+      {/* Services Section */}
+      <section className="grid md:grid-cols-4 gap-6 px-10 py-14 bg-gray-50">
+        <div className="text-center bg-white p-6 shadow">
+          <img src={business} alt="Business Planning" className="mx-auto mb-4 h-12" />
+          <h3 className="font-semibold mb-2">Business Planning</h3>
+          <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div className="text-center bg-white p-6 shadow">
+          <img src={financial} alt="Financial Planning" className="mx-auto mb-4 h-12" />
+          <h3 className="font-semibold mb-2">Financial Planning</h3>
+          <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div className="text-center bg-white p-6 shadow">
+          <img src={digital} alt="Digital Marketing" className="mx-auto mb-4 h-12" />
+          <h3 className="font-semibold mb-2">Digital Marketing</h3>
+          <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div className="text-center bg-white p-6 shadow">
+          <img src={analysis} alt="Market Analysis" className="mx-auto mb-4 h-12" />
+          <h3 className="font-semibold mb-2">Market Analysis</h3>
+          <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+      </section>
+
+      {/* Comfort Section */}
+      <section className="flex flex-col md:flex-row items-center p-10 space-y-6 md:space-y-0 md:space-x-10 bg-gray-50h">
+        <img src={woman} alt="Happy Woman" className="w-full max-w-[600px]" />
+
+        <div className="shadow-lg p-8 bg-white">
+          <h2 className="text-4xl font-bold mb-4 leading-snug">
+            Find your comfort<br />
+            working zone with<br />
+            {/* <span className="inline-block relative"> */}
+              Cozy Corner
+              {/* <span className="absolute left-0 -bottom-2 w-8 h-[2px] bg-[#737254]"></span>
+            </span> */}
+          </h2>
+          <p className="text-gray-500 text-base max-w-md">
+            Change your work environment by using a co-working place, to meet new people and gain a new network.
+          </p>
+        </div>
+      </section>
+
+      {/* Products Section */}
+      <section className="grid md:grid-cols-4 gap-6 px-10 pb-14">
+        <div className="text-center bg-white rounded-lg p-6 shadow">
+          <img src={dairy} alt="Dairy Products" className="mx-auto mb-4 h-12" />
+          <h3 className="font-semibold mb-2">Dairy Products</h3>
+          <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div className="text-center bg-white rounded-lg p-6 shadow">
+          <img src={vegetables} alt="Vegetables & Fruits" className="mx-auto mb-4 h-12" />
+          <h3 className="font-semibold mb-2">Vegetables & Fruits</h3>
+          <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div className="text-center bg-white rounded-lg p-6 shadow">
+          <img src={spices} alt="Spices & Seasonings" className="mx-auto mb-4 h-12" />
+          <h3 className="font-semibold mb-2">Spices & Seasonings</h3>
+          <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+        <div className="text-center bg-white rounded-lg p-6 shadow">
+          <img src={honey} alt="Honey" className="mx-auto mb-4 h-12" />
+          <h3 className="font-semibold mb-2">Honey</h3>
+          <p className="text-sm text-gray-500">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-gray-900 text-white p-10">
+        <div className="grid md:grid-cols-3 gap-6">
+          <div>
+            <h4 className="font-semibold mb-2">SatyamStudio</h4>
+            <p className="text-sm text-gray-400">
+              OurStudio is a digital agency UX/UI Design & Website Development Located in Ohio, United States of America.
+            </p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Get In Touch</h4>
+            <p className="text-sm"> 839 N 90th St. South Gate, CA 90280 </p>
+            <p className="text-sm">Ourstudio@hello.com</p>
+            <p className="text-sm">+1 386-688-3295</p>
+          </div>
+          <div>
+            <h4 className="font-semibold mb-2">Join a Newsletter</h4>
+            <input type="email" placeholder="Enter Your Email" className="p-2 rounded-md w-full text-gray-800" />
+            <button className="bg-blue-600 mt-4 px-4 py-2 rounded-lg w-full">Subscribe</button>
+          </div>
+        </div>
+        <p className="text-center text-gray-500 text-xs mt-6">Copyright Satyam Studio</p>
+      </footer>
+    </div>
+  );
+};
+
+export default HomePage;
