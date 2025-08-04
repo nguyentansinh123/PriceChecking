@@ -1,4 +1,4 @@
-import logo from '../../assets/logo.png';
+
 import analysis from '../../assets/analysis.png';
 import stats from '../../assets/stats.png';
 import business from '../../assets/business.png';
@@ -21,22 +21,7 @@ const HomePage = () => {
       <div className="bg-gray-50 py-10">
         <div className="w-4/5 mx-auto space-y-10 font-sans text-gray-800">
           
-          <header className="flex justify-between items-center px-4 py-4">
-            <div className="flex items-center space-x-4">
-              <img src={logo} alt="PCompare Logo" className="h-10" />
-              <span className="font-bold text-lg">PCompare</span>
-            </div>
-            <nav className="space-x-10 text-lg font-semibold">
-              <a href="#" className="hover:text-blue-600">Home</a>
-              <a href="#" className="hover:text-blue-600">About Us</a>
-              <a href="#" className="hover:text-blue-600">Service</a>
-              <a href="#" className="hover:text-blue-600">Contact Us</a>
-              <button 
-                className="bg-[#0c1c64] text-white px-8 py-2 rounded-md cursor-pointer hover:bg-blue-600"
-                onClick={() => window.location.href = '/login'}> Login
-              </button>
-            </nav>
-          </header>
+
           
           <section className="flex flex-col md:flex-row items-baseline-start p-0 bg-transparent">
 
