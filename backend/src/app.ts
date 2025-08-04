@@ -1,6 +1,7 @@
 import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { router as AuthRoute } from './routes/auth.route'
+import { router as UserRoute } from './routes/user.route'
 import { connectDB } from './lib/connectDB';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
@@ -31,6 +32,7 @@ const port = process.env.PORT || 5000;
 connectDB();
 
 app.use('/api/v1/auth', AuthRoute);
+app.use('/api/v1/user', UserRoute);
 
 app.get("/", (req, res) => {
   console.log('from home', req.user)
