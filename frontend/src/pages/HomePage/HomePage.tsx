@@ -13,6 +13,7 @@ import honey from '../../assets/honey.png';
 import tick from '../../assets/tick.png';
 import chart from '../../assets/chart.png';
 import quote from '../../assets/double-quote.png';
+import Footer from '@/comps/HomeCMTS/Footer';
 
 const HomePage = () => {
   return (
@@ -152,27 +153,7 @@ const HomePage = () => {
         </div>
       </div>
       
-      <footer className="bg-gray-900 text-white p-10">
-        <div className="grid md:grid-cols-3 gap-6">
-          <div>
-            <h4 className="font-semibold mb-2">SatyamStudio</h4>
-            <p className="text-sm text-gray-400">
-              OurStudio is a digital agency UX/UI Design & Website Development Located in Ohio, United States of America.
-            </p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Get In Touch</h4>
-            <p className="text-sm"> 839 N 90th St. South Gate, CA 90280 </p>
-            <p className="text-sm">Ourstudio@hello.com</p>
-            <p className="text-sm">+1 386-688-3295</p>
-          </div>
-          <div>
-            <h4 className="font-semibold mb-2">Join a Newsletter</h4>
-            <input type="email" placeholder="Enter Your Email" className="p-2 rounded-md w-full text-gray-800" />
-            <button className="bg-blue-600 mt-4 px-4 py-2 rounded-lg w-full">Subscribe</button>
-          </div>
-        </div>
-      </footer>
+      <Footer/>
     </>
   );
 };
