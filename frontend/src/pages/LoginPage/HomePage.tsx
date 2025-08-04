@@ -14,17 +14,15 @@ import honey from '../../assets/honey.png';
 import tick from '../../assets/tick.png';
 import chart from '../../assets/chart.png';
 import quote from '../../assets/double-quote.png';
-import LoginPage from "./LoginPage"; 
 
 const HomePage = () => {
   return (
     <div className="font-sans text-gray-800">
       
-      {/* Header */}
       <header className="flex justify-between items-center px-20 py-4 shadow-sm bg-gray-50">
         <div className="flex items-center space-x-4">
           <img src={logo} alt="PCompare Logo" className="h-9" />
-          <span className="font-bold text-xl text-lg">PCompare</span>
+          <span className="font-bold text-lg">PCompare</span>
         </div>
         <nav className="space-x-10 text-md font-semibold">
           <a href="#" className="hover:text-blue-600">Home</a>
@@ -32,13 +30,12 @@ const HomePage = () => {
           <a href="#" className="hover:text-blue-600">Service</a>
           <a href="#" className="hover:text-blue-600">Contact Us</a>
           <button 
-            className="bg-[#0c1c64] text-white px-8 py-2 rounded-md"
+            className="bg-[#0c1c64] text-white px-8 py-2 rounded-md cursor-pointer hover:bg-blue-600"
             onClick={() => window.location.href = '/login'}> Login
           </button>
         </nav>
       </header>
 
-      {/* Main Section */}
       <section className="flex flex-col md:flex-row items-baseline-start p-10 bg-gray-50">
 
         <div className="flex-1 flex flex-col space-y-6 pt-18">
@@ -91,7 +88,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Services Section */}
       <section className="grid md:grid-cols-4 gap-6 px-10 py-14 bg-gray-50">
         <div className="text-center bg-white p-6 shadow">
           <img src={business} alt="Business Planning" className="mx-auto mb-4 h-12" />
@@ -115,7 +111,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Comfort Section */}
       <section className="flex flex-col md:flex-row items-center p-10 space-y-6 md:space-y-0 md:space-x-10 bg-gray-50h">
         <img src={woman} alt="Happy Woman" className="w-full max-w-[600px]" />
 
@@ -123,10 +118,7 @@ const HomePage = () => {
           <h2 className="text-4xl font-bold mb-4 leading-snug">
             Find your comfort<br />
             working zone with<br />
-            {/* <span className="inline-block relative"> */}
               Cozy Corner
-              {/* <span className="absolute left-0 -bottom-2 w-8 h-[2px] bg-[#737254]"></span>
-            </span> */}
           </h2>
           <p className="text-gray-500 text-base max-w-md">
             Change your work environment by using a co-working place, to meet new people and gain a new network.
@@ -158,7 +150,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      {/* Footer */}
       <footer className="bg-gray-900 text-white p-10">
         <div className="grid md:grid-cols-3 gap-6">
           <div>
