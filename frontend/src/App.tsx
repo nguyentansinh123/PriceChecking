@@ -1,7 +1,7 @@
 import './App.css'
 import { Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage/LoginPage';
-import HomePage from './pages/LoginPage/HomePage';
+import HomePage from './pages/HomePage/HomePage';
 import RegisterPage from './pages/Register/RegisterPage';
 import ForgotPassword from './pages/FPPage/ForgotPassword';
 import OtpPage from './pages/OtpPage/OtpPage';
