@@ -1,6 +1,7 @@
 import { FaRegEnvelope, FaLock, FaFacebook, FaYoutube, FaLinkedin } from 'react-icons/fa';
 import { FcGoogle } from 'react-icons/fc';
 import cloudImage from '../../assets/cloud.png';
+import { Link } from 'react-router-dom';
 
 const LoginPage = () => {
   return (
@@ -69,6 +70,13 @@ const LoginPage = () => {
                 Login
               </button>
             </form>
+
+              <Link
+                to="/register"
+                className="block text-sm italic text-[#00004C] mt-6 hover:underline"
+              >
+                Don't have an account? Register Here
+              </Link>
             <div className="mt-12 flex justify-center items-center space-x-6">
               <a href="#" className="text-blue-600 text-4xl hover:opacity-80"><FaFacebook /></a>
               <a href="#" className="text-4xl hover:opacity-80"><FcGoogle /></a>
