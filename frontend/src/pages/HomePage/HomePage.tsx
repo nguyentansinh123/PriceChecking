@@ -14,6 +14,7 @@ import tick from '../../assets/tick.png';
 import chart from '../../assets/chart.png';
 import quote from '../../assets/double-quote.png';
 import Footer from '@/comps/HomeCMTS/Footer';
+import Navbar from '@/comps/HomeCMTS/Navbar';
 
 const HomePage = () => {
   return (
@@ -21,7 +22,7 @@ const HomePage = () => {
       <div className="bg-gray-50 py-10">
         <div className="w-4/5 mx-auto space-y-10 font-sans text-gray-800">
           
-
+          <Navbar/>
           
           <section className="flex flex-col md:flex-row items-baseline-start p-0 bg-transparent">
 
