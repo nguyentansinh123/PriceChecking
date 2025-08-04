@@ -26,7 +26,7 @@ const HomePage = () => {
               <img src={logo} alt="PCompare Logo" className="h-10" />
               <span className="font-bold text-lg">PCompare</span>
             </div>
-            <nav className="space-x-10 text-lg font-bold">
+            <nav className="space-x-10 text-lg font-semibold">
               <a href="#" className="hover:text-blue-600">Home</a>
               <a href="#" className="hover:text-blue-600">About Us</a>
               <a href="#" className="hover:text-blue-600">Service</a>
