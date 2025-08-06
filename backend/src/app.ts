@@ -7,10 +7,18 @@ import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import passport from 'passport';
 import './controller/tpAuth.controller';
+import cors from 'cors'
 
 dotenv.config();
 
 const app = express();
+
+app.use(
+  cors({
+    origin: process.env.FRONTEND_URL,
+    credentials: true
+  })
+)
 
 app.use(session({
     secret: process.env.SESSION_SECRET as string,

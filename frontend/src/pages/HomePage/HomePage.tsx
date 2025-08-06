@@ -14,11 +14,20 @@ import chart from '../../assets/chart.png';
 import quote from '../../assets/double-quote.png';
 import Footer from '@/comps/HomeCMTS/Footer';
 import Navbar from '@/comps/HomeCMTS/Navbar';
+import AOS from 'aos'
+import 'aos/dist/aos.css'
+import {useEffect} from 'react'
+import { ReactTyped } from "react-typed";
 
 const HomePage = () => {
+
+  useEffect(() => {
+    AOS.init({ duration: 1200, once: true })
+  }, [])
+
   return (
     <>
-      <div className="bg-gray-50 py-10">
+      <div className="bg-gray-50 py-10 overflow-hidden">
         <div className="w-4/5 mx-auto space-y-10 font-sans text-gray-800">
           
           <Navbar/>
@@ -27,7 +36,15 @@ const HomePage = () => {
 
             <div className="flex-1 flex flex-col space-y-6 pt-18">
               <h1 className="text-6xl font-bold leading-tight">
-                Let your <span className="text-blue-600">prices</span> being low
+                Let your prices be {' '}
+                <span className="text-blue-600 block text-7xl">
+                  <ReactTyped
+                    strings={['Low', 'Efficient', 'Better']}
+                    typeSpeed={100}
+                    backSpeed={50}
+                    loop
+                  />
+                </span> 
               </h1>
               <p className="text-gray-500 max-w-md">
                 Get fresh groceries online without stepping out to make delicious food with the freshest ingredients.
@@ -63,9 +80,9 @@ const HomePage = () => {
             </div>
             
             <div className="flex-1 flex flex-col items-end justify-end relative mt-10 md:mt-0 z-0">
-              <img src={world} alt="World Map" className="w-full max-w-[600px] mx-auto mr-80" />
+              <img src={world} alt="World Map" data-aos="slide-left" className="w-full max-w-[600px] mx-auto mr-80" />
 
-              <div className="-mt-30 bg-white/50 backdrop-blur-sm shadow-md p-6 rounded-lg text-md w-92 max-w-full z-10">
+              <div data-aos="slide-left" className="-mt-30 bg-white/50 backdrop-blur-sm shadow-md p-6 rounded-lg text-md w-92 max-w-full z-10">
                 <img src={quote} alt="Quote" className="h-6 mb-4" />
                 <p>
                   For the past few years, I’ve had a hard time finding the right place for skin care to deal with my complicated skin condition, thank God I found GlowQueen to treat my skin
@@ -75,7 +92,7 @@ const HomePage = () => {
             </div>
           </section>
           
-          <section className="grid md:grid-cols-4 gap-6 px-10 py-14 bg-gray-50">
+          <section className="grid md:grid-cols-4 gap-6 px-10 py-14 bg-gray-50" data-aos="fade-up">
             <div className="text-center bg-white p-6 shadow">
               <img src={business} alt="Business Planning" className="mx-auto mb-4 h-12" />
               <h3 className="font-semibold mb-2">Business Planning</h3>

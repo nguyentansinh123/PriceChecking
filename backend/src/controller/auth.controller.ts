@@ -177,12 +177,17 @@ export const verifiedEmail = async (req: Request, res: Response) => {
 }
 
 export const isAuthenticated = async (req: Request, res: Response) => {
-        try {
-        res.json({success: true,message: "User is Authenticated"})
-        
-    } catch (error) {
-        res.json({success: false, message: (error as Error).message})
+  try {
+    const user = await UserModel
+      .findById(req.currentUserId)
+      .select('-password')
+    if (!user) {
+      return res.status(404).json({ success: false, message: 'User not found' })
     }
+    return res.json({ success: true, message: 'User is authenticated', user })
+  } catch (error) {
+    return res.json({ success: false, message: (error as Error).message })
+  }
 }
 
 export const sendResetOtp = async (req: Request, res: Response) => {
