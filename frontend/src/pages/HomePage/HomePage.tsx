@@ -122,7 +122,7 @@ const HomePage = () => {
               <h2 className="text-4xl font-bold mb-4 leading-snug">
                 Find your comfort<br />
                 working zone with<br />
-                  Cozy Corner
+                Cozy Corner
               </h2>
               <p className="text-gray-500 text-base max-w-md">
                 Change your work environment by using a co-working place, to meet new people and gain a new network.
