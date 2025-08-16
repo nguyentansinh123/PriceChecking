@@ -1,0 +1,7 @@
+2025/08/17-09:29:04.012 bfa1 Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/IndexedDB/https_www.igashop.com.au_0.indexeddb.leveldb/MANIFEST-000001
+2025/08/17-09:29:04.012 bfa1 Recovering log #4
+2025/08/17-09:29:04.012 bfa1 Reusing old log /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/IndexedDB/https_www.igashop.com.au_0.indexeddb.leveldb/000004.log 
+2025/08/17-09:29:04.055 bfa3 Level-0 table #8: started
+2025/08/17-09:29:04.056 bfa3 Level-0 table #8: 2002 bytes OK
+2025/08/17-09:29:04.057 bfa3 Delete type=0 #4
+2025/08/17-09:29:04.057 bfa1 Manual compaction at level-0 from '\x00\x05\x00\x00\x00' @ 72057594037927935 : 1 .. '\x00\x06\x00\x00\x00' @ 0 : 0; will stop at (end)

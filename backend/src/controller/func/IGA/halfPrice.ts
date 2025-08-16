@@ -12,7 +12,7 @@ export const scrapeIgaHalfPrice = async (): Promise<ScrapedItem[]> => {
   let browser: Browser | null = null;
   try {
     browser = await puppeteer.launch({
-      headless: false,
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
       defaultViewport: null,
       userDataDir: "./tmp",
     });
@@ -97,10 +97,5 @@ export const scrapeIgaHalfPrice = async (): Promise<ScrapedItem[]> => {
         error instanceof Error ? error.message : String(error)
       }`
     );
-  } finally {
-    if (browser) {
-      await browser.close();
-      console.log("Browser closed.");
-    }
-  }
+  } 
 };

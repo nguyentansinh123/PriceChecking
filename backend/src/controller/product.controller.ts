@@ -1,6 +1,8 @@
 import { Request, Response } from "express";
 import { scrapeSingleProduct } from "./func/Coles/singleProduct";
 import { scrapeColesSpecials } from "./func/Coles/specialsCatalogs";
+import { scrapeIgaSingleProduct } from "./func/IGA/singleProduct";
+import { scrapeIgaHalfPrice } from "./func/IGA/halfPrice";
 
 export const getColesSingleProduct = async (req: Request, res: Response) => {
   const { url } = req.query;
@@ -28,4 +30,32 @@ export const getColesSpecialCatalog = async (req: Request, res: Response) =>{
        console.log(error) 
        res.status(500).json({error: "Failed Scrape Data Special Coles"})
     }
+}
+
+export const getIGASingleProduct = async (req: Request, res: Response)=>{
+  const {url} = req.query
+
+  if (!url || typeof url !== "string"){
+    console.log(url)
+    return res.status(400).json({error: "Product Url is required as a query parameter."})
+
+  }
+  try {
+    
+   const result = await scrapeIgaSingleProduct(url) 
+   res.status(200).json(result)
+  } catch (error) {
+   console.log(error) 
+   res.status(500).json({error: "Product Url is required as a query parameter"})
+  }
+}
+
+export const getIGAhalfPrice = async (req: Request, res: Response) =>{
+  try {
+   const result = await scrapeIgaHalfPrice() 
+   res.status(200).json(result)
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({error: "Product Url is required as a query parametter"})
+  }
 }
