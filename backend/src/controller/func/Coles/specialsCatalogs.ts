@@ -16,7 +16,6 @@ export const scrapeColesSpecials = async (): Promise<ScrapedItem[]> => {
   let browser: Browser | null = null;
   try {
     browser = await puppeteer.launch({
-      headless: false,
       args: [
         "--enable-features=NetworkService,NetworkServiceInProcess",
         "--no-sandbox",
@@ -33,7 +32,7 @@ export const scrapeColesSpecials = async (): Promise<ScrapedItem[]> => {
     console.log("Running tests…");
 
     await page.goto(
-      "https://www.coles.com.au/on-special?pid=homepage_cat_explorer_specials",
+      "https://www.coles.com.au/on-special?pid=homepage_cat_explorer_specials&page=136",
       { waitUntil: "load" }
     );
     await setTimeout(2000);
@@ -113,10 +112,5 @@ export const scrapeColesSpecials = async (): Promise<ScrapedItem[]> => {
   } catch (error) {
     console.error("An error occurred during scraping:", error);
     return [];
-  } finally {
-    if (browser) {
-      await browser.close();
-      console.log("Browser closed.");
-    }
   }
 };

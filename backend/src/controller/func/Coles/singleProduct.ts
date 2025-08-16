@@ -45,7 +45,6 @@ export const scrapeSingleProduct = async (
   let browser: Browser | null = null;
   try {
     browser = await puppeteer.launch({
-      headless: false,
       args: [
         "--enable-features=NetworkService,NetworkServiceInProcess",
         "--no-sandbox",
@@ -155,10 +154,5 @@ export const scrapeSingleProduct = async (
         error instanceof Error ? error.message : String(error)
       }`
     );
-  } finally {
-    if (browser) {
-      await browser.close();
-      console.log("Browser closed.");
-    }
-  }
+  } 
 };

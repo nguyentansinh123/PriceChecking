@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { scrapeSingleProduct } from "./func/Coles/singleProduct";
+import { scrapeColesSpecials } from "./func/Coles/specialsCatalogs";
 
 export const getColesSingleProduct = async (req: Request, res: Response) => {
   const { url } = req.query;
@@ -18,3 +19,13 @@ export const getColesSingleProduct = async (req: Request, res: Response) => {
     res.status(500).json({ error: "Failed to scrape product data." });
   }
 };
+
+export const getColesSpecialCatalog = async (req: Request, res: Response) =>{
+    try {
+       const result = await scrapeColesSpecials() 
+       res.status(200).json(result)
+    } catch (error) {
+       console.log(error) 
+       res.status(500).json({error: "Failed Scrape Data Special Coles"})
+    }
+}
