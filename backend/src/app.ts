@@ -2,12 +2,14 @@ import express, { Request, Response } from 'express';
 import dotenv from 'dotenv';
 import { router as AuthRoute } from './routes/auth.route'
 import { router as UserRoute } from './routes/user.route'
+import {router as ProductRoute} from './routes/product.route'
 import { connectDB } from './lib/connectDB';
 import cookieParser from 'cookie-parser';
 import session from 'express-session';
 import passport from 'passport';
 import './controller/tpAuth.controller';
 import cors from 'cors'
+
 
 dotenv.config();
 
@@ -41,6 +43,7 @@ connectDB();
 
 app.use('/api/v1/auth', AuthRoute);
 app.use('/api/v1/user', UserRoute);
+app.use('/api/v1/product', ProductRoute)
 
 app.get("/", (req, res) => {
   console.log('from home', req.user)

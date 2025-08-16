@@ -1,8 +1,7 @@
 import puppeteer from "puppeteer-extra";
 import { setTimeout } from "node:timers/promises";
 import { Browser, Page } from "puppeteer";
-
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 interface NutritionInfo {
   nutrient: string;
@@ -47,7 +46,10 @@ export const scrapeSingleProduct = async (
   try {
     browser = await puppeteer.launch({
       headless: false,
-      args: ["--enable-features=NetworkService,NetworkServiceInProcess"],
+      args: [
+        "--enable-features=NetworkService,NetworkServiceInProcess",
+        "--no-sandbox",
+      ],
     });
 
     const page = await browser.newPage();

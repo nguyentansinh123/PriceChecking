@@ -1,8 +1,7 @@
 import puppeteer from "puppeteer-extra";
 import { setTimeout } from "node:timers/promises";
 import { Browser } from "puppeteer";
-
-const StealthPlugin = require("puppeteer-extra-plugin-stealth");
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 interface ScrapedItem {
   title: string | null;
@@ -18,7 +17,10 @@ export const scrapeColesSpecials = async (): Promise<ScrapedItem[]> => {
   try {
     browser = await puppeteer.launch({
       headless: false,
-      args: ["--enable-features=NetworkService,NetworkServiceInProcess"],
+      args: [
+        "--enable-features=NetworkService,NetworkServiceInProcess",
+        "--no-sandbox",
+      ],
     });
 
     const page = await browser.newPage();
@@ -110,7 +112,7 @@ export const scrapeColesSpecials = async (): Promise<ScrapedItem[]> => {
     return items;
   } catch (error) {
     console.error("An error occurred during scraping:", error);
-    return []; 
+    return [];
   } finally {
     if (browser) {
       await browser.close();
