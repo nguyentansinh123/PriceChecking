@@ -34,7 +34,6 @@ export const scrapeIgaSingleProduct = async (productUrl: string): Promise<Produc
   let browser: Browser | null = null;
   try {
     browser = await puppeteer.launch({
-      headless: false, 
       defaultViewport: null,
       userDataDir: "./tmp",
     });
@@ -116,10 +115,5 @@ export const scrapeIgaSingleProduct = async (productUrl: string): Promise<Produc
   } catch (error) {
     console.error("An error occurred during IGA single product scraping:", error);
     throw new Error(`Scraping failed for ${productUrl}: ${error instanceof Error ? error.message : String(error)}`);
-  } finally {
-    if (browser) {
-      await browser.close();
-      console.log("Browser closed.");
-    }
-  }
+  } 
 };

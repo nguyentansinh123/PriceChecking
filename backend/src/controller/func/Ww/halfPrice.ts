@@ -14,7 +14,6 @@ export const scrapeWwHalfPrice = async (): Promise<ScrapedItem[]> => {
   let browser: Browser | null = null;
   try {
     browser = await puppeteer.launch({
-      headless: false, // Set to true for production environments
       defaultViewport: null,
       userDataDir: "./tmp",
     });
@@ -111,10 +110,5 @@ export const scrapeWwHalfPrice = async (): Promise<ScrapedItem[]> => {
         error instanceof Error ? error.message : String(error)
       }`
     );
-  } finally {
-    if (browser) {
-      await browser.close();
-      console.log("Browser closed.");
-    }
-  }
+  } 
 };

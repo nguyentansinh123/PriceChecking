@@ -8,35 +8,11 @@ interface ScrapedItem {
   href: string | null;
 }
 
-const safeEvalFromCard = async (
-  page: Page,
-  btn: ElementHandle,
-  selector: string,
-  evaluateFn: (element: Element) => string | null
-): Promise<string | null> => {
-  try {
-    return await page.evaluate(
-      (el, sel, cardSel) => {
-        const card = el.closest(cardSel);
-        if (!card) return null;
-        const targetEl = card.querySelector(sel);
-        return targetEl ? (evaluateFn(targetEl) as string | null) : null;
-      },
-      btn,
-      selector,
-      "[data-product-card]" 
-    );
-  } catch (e) {
-    console.warn(`Error evaluating selector "${selector}":`, e);
-    return null;
-  }
-};
-
 export const scrapeIgaHalfPrice = async (): Promise<ScrapedItem[]> => {
   let browser: Browser | null = null;
   try {
     browser = await puppeteer.launch({
-      headless: false, 
+      headless: false,
       defaultViewport: null,
       userDataDir: "./tmp",
     });
@@ -60,53 +36,33 @@ export const scrapeIgaHalfPrice = async (): Promise<ScrapedItem[]> => {
     while (true) {
       const productButtons = await page.$$('[data-add-to-cart-button="true"]');
       for (const btn of productButtons) {
-        const cardSel = "[data-product-card]";
+        const item: ScrapedItem | null = await page.evaluate((el) => {
+          const card = el.closest("[data-product-card]");
+          if (!card) return null;
 
-        const title = await page.evaluate(
-          (el, sel) =>
-            el
-              .closest(sel)
-              ?.querySelector('a[data-variant="link"] span.line-clamp-3')
-              ?.textContent?.trim() ?? null,
-          btn,
-          cardSel
-        );
-        const quantity = await page.evaluate(
-          (el, sel) =>
-            el
-              .closest(sel)
-              ?.querySelector('a[data-variant="link"] span:nth-of-type(2)')
-              ?.textContent?.trim() ?? null,
-          btn,
-          cardSel
-        );
-        const price = await page.evaluate(
-          (el, sel) =>
-            el
-              .closest(sel)
-              ?.querySelector("span.font-bold.leading-none")
-              ?.textContent?.trim() ?? null,
-          btn,
-          cardSel
-        );
-        const image = await page.evaluate(
-          (el, sel) =>
-            el.closest(sel)?.querySelector("img")?.getAttribute("src") ?? null,
-          btn,
-          cardSel
-        );
-        const href = await page.evaluate(
-          (el, sel) =>
-            el
-              .closest(sel)
-              ?.querySelector('a[data-variant="link"]')
-              ?.getAttribute("href") ?? null,
-          btn,
-          cardSel
-        );
+          const title =
+            card
+              .querySelector('a[data-variant="link"] span.line-clamp-3')
+              ?.textContent?.trim() ?? null;
+          const quantity =
+            card
+              .querySelector('a[data-variant="link"] span:nth-of-type(2)')
+              ?.textContent?.trim() ?? null;
+          const price =
+            card
+              .querySelector("span.font-bold.leading-none")
+              ?.textContent?.trim() ?? null;
+          const image = card.querySelector("img")?.getAttribute("src") ?? null;
+          const href =
+            card
+              .querySelector('a[data-variant="link"]')
+              ?.getAttribute("href") ?? null;
 
-        if (title) {
-          items.push({ title, quantity, price, image, href });
+          return { title, quantity, price, image, href };
+        }, btn);
+
+        if (item?.title) {
+          items.push(item);
         }
       }
 

@@ -48,7 +48,6 @@ export const scrapeWwSingleProduct = async (
   let browser: Browser | null = null;
   try {
     browser = await puppeteer.launch({
-      headless: false, 
       defaultViewport: null,
       userDataDir: "./tmp",
     });
@@ -126,10 +125,5 @@ export const scrapeWwSingleProduct = async (
         error instanceof Error ? error.message : String(error)
       }`
     );
-  } finally {
-    if (browser) {
-      await browser.close();
-      console.log("Browser closed.");
-    }
   }
 };
