@@ -3,6 +3,7 @@ import { scrapeSingleProduct } from "./func/Coles/singleProduct";
 import { scrapeColesSpecials } from "./func/Coles/specialsCatalogs";
 import { scrapeIgaSingleProduct } from "./func/IGA/singleProduct";
 import { scrapeIgaHalfPrice } from "./func/IGA/halfPrice";
+import { scrapeWwSingleProduct } from "./func/Ww/singleProduct";
 
 export const getColesSingleProduct = async (req: Request, res: Response) => {
   const { url } = req.query;
@@ -57,5 +58,23 @@ export const getIGAhalfPrice = async (req: Request, res: Response) =>{
   } catch (error) {
     console.log(error)
     res.status(500).json({error: "Product Url is required as a query parametter"})
+  }
+}
+
+export const getWWsingleProduct = async (req: Request, res: Response) => {
+  const {url} = req.query
+
+  if (!url || typeof url != "string"){
+    return res.status(400).json({error: "Product Url is required as a query parameter."})
+  }
+  try {
+
+    const result = await scrapeWwSingleProduct(url)
+    res.status(200).json(result)
+    
+  } catch (error) {
+    console.log(error)
+    res.status(500).json({error: "Something Went Wrong"})
+    
   }
 }

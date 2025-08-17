@@ -1,2 +1,3 @@
-2025/08/17-09:20:27.863 bc5f Creating DB /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Extension Rules since it was missing.
-2025/08/17-09:20:27.866 bc5f Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Extension Rules/MANIFEST-000001
+2025/08/17-09:29:03.410 bfa1 Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Extension Rules/MANIFEST-000001
+2025/08/17-09:29:03.411 bfa1 Recovering log #3
+2025/08/17-09:29:03.411 bfa1 Reusing old log /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Extension Rules/000003.log 

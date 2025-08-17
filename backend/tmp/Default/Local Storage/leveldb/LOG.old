@@ -1,2 +1,3 @@
-2025/08/17-09:20:27.859 bc7a Creating DB /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Local Storage/leveldb since it was missing.
-2025/08/17-09:20:27.869 bc7a Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Local Storage/leveldb/MANIFEST-000001
+2025/08/17-09:57:10.874 cbbf Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Local Storage/leveldb/MANIFEST-000001
+2025/08/17-09:57:10.880 cbbf Recovering log #3
+2025/08/17-09:57:10.881 cbbf Reusing old log /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Local Storage/leveldb/000003.log 

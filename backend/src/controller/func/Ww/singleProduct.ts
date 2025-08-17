@@ -1,4 +1,6 @@
-import puppeteer, { Browser, Page } from "puppeteer";
+import puppeteer from "puppeteer-extra";
+import { Browser, Page } from "puppeteer";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
 
 interface NutritionInfo {
   nutrient: string;
@@ -16,10 +18,12 @@ interface ProductDetails {
   nutritionNote: string | null;
 }
 
+puppeteer.use(StealthPlugin());
+
 const safeEval = async <T>(
   page: Page,
   selector: string,
-  fn: (el: Element) => T 
+  fn: (el: Element) => T
 ): Promise<T | null> => {
   try {
     return await page.$eval(selector, fn);
@@ -48,6 +52,7 @@ export const scrapeWwSingleProduct = async (
   let browser: Browser | null = null;
   try {
     browser = await puppeteer.launch({
+      args: ["--no-sandbox", "--disable-setuid-sandbox", "--disable-http2"],
       defaultViewport: null,
       userDataDir: "./tmp",
     });
@@ -78,7 +83,7 @@ export const scrapeWwSingleProduct = async (
     const productDetails = await safeEval(
       page,
       ".text_component_text__ErEDp",
-      (el) => (el as HTMLElement).innerText.trim() 
+      (el) => (el as HTMLElement).innerText.trim()
     );
 
     const nutrition = await safeEvalAll(
@@ -100,7 +105,7 @@ export const scrapeWwSingleProduct = async (
     const nutritionNote = await safeEval(
       page,
       ".nutritional-info_component_nutrition-note__zPIVr",
-      (el) => (el as HTMLElement).innerText.trim() 
+      (el) => (el as HTMLElement).innerText.trim()
     );
 
     const output: ProductDetails = {

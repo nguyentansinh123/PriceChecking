@@ -1,2 +1,3 @@
-2025/08/17-09:20:27.958 bc67 Creating DB /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/shared_proto_db since it was missing.
-2025/08/17-09:20:27.962 bc67 Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/shared_proto_db/MANIFEST-000001
+2025/08/17-09:57:10.952 cba5 Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/shared_proto_db/MANIFEST-000001
+2025/08/17-09:57:10.952 cba5 Recovering log #3
+2025/08/17-09:57:10.952 cba5 Reusing old log /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/shared_proto_db/000003.log 

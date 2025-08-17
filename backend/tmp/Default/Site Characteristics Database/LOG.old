@@ -1,2 +1,3 @@
-2025/08/17-09:20:27.856 bc69 Creating DB /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Site Characteristics Database since it was missing.
-2025/08/17-09:20:27.860 bc69 Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Site Characteristics Database/MANIFEST-000001
+2025/08/17-09:57:10.872 cba4 Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Site Characteristics Database/MANIFEST-000001
+2025/08/17-09:57:10.873 cba4 Recovering log #3
+2025/08/17-09:57:10.873 cba4 Reusing old log /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Site Characteristics Database/000003.log 
