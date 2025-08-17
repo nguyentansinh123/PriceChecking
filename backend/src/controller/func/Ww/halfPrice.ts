@@ -1,7 +1,11 @@
-import puppeteer, { Browser, ElementHandle } from "puppeteer";
+import puppeteer from "puppeteer-extra";
+import StealthPlugin from "puppeteer-extra-plugin-stealth";
+import { Browser, Page, ElementHandle } from "puppeteer";
+import fs from "fs/promises";
 
-// Interface for the scraped product data
-interface ScrapedItem {
+puppeteer.use(StealthPlugin());
+
+export interface Product {
   title: string | null;
   price: string | null;
   originalPrice: string | null;
@@ -10,105 +14,146 @@ interface ScrapedItem {
   href: string | null;
 }
 
-export const scrapeWwHalfPrice = async (): Promise<ScrapedItem[]> => {
+/**
+ * Scrapes product details from a single product tile element.
+ * @param productHandle - The Puppeteer element handle for a product tile.
+ * @returns A promise that resolves to the scraped product data.
+ */
+async function scrapeProductTile(
+  productHandle: ElementHandle<Element>
+): Promise<Product> {
+  const shadowRootHandle = await productHandle.evaluateHandle(
+    (el: Element) => el.shadowRoot
+  );
+  const shadowRoot = shadowRootHandle.asElement();
+  if (!shadowRoot) {
+    return {
+      title: null,
+      price: null,
+      originalPrice: null,
+      image: null,
+      productId: null,
+      href: null,
+    };
+  }
+
+  const getProperty = async <T>(
+    selector: string,
+    property: string
+  ): Promise<T | null> => {
+    const element = await shadowRoot.$(selector);
+    if (!element) return null;
+    return element.evaluate((el: any, prop: string) => el[prop], property);
+  };
+
+  const getAttribute = async (
+    selector: string,
+    attribute: string
+  ): Promise<string | null> => {
+    const element = await shadowRoot.$(selector);
+    if (!element) return null;
+    return element.evaluate(
+      (el: Element, attr: string) => el.getAttribute(attr),
+      attribute
+    );
+  };
+
+  const hrefSelector =
+    "section > div > div.product-tile-group.left > div > div > a";
+  const imageSelector = `${hrefSelector} > img`;
+
+  const href = await getAttribute(hrefSelector, "href");
+  const title = await getProperty<string>(
+    "section .product-title-container a",
+    "textContent"
+  );
+  const price = await getProperty<string>(
+    "section .label-price-promotion .primary",
+    "textContent"
+  );
+  const originalPrice = await getProperty<string>(
+    "section .label-price-promotion .secondary .was-price",
+    "textContent"
+  );
+  const image = await getAttribute(imageSelector, "src");
+
+  const productId = image
+    ? image.split("/").pop()?.split(".")[0] ?? null
+    : null;
+
+  return {
+    title: title?.trim() ?? null,
+    price: price?.trim() ?? null,
+    originalPrice: originalPrice?.trim() ?? null,
+    image,
+    productId,
+    href,
+  };
+}
+
+/**
+ * Scrapes all half-price products from the Woolworths website.
+ * @returns A promise that resolves to an array of scraped products.
+ */
+export async function scrapeHalfPriceProducts(): Promise<Product[]> {
   let browser: Browser | null = null;
   try {
+    console.log("Launching browser...");
     browser = await puppeteer.launch({
+      headless: true,  
       defaultViewport: null,
       userDataDir: "./tmp",
+      args: ["--no-sandbox", "--disable-setuid-sandbox"],
     });
+
     const page = await browser.newPage();
+    page.setDefaultNavigationTimeout(60000); 
+    page.setDefaultTimeout(60000);   
 
-    await page.goto(
-      "https://www.woolworths.com.au/shop/browse/specials/half-price",
-      { waitUntil: "networkidle2" }
-    );
+    const startUrl =
+      "https://www.woolworths.com.au/shop/browse/specials/half-price?icmpid=sm-prnav-sc-halfprice&pageNumber=1";
+    console.log(`Navigating to ${startUrl}...`);
+    await page.goto(startUrl, { waitUntil: "networkidle2" });
 
-    const nextBtnSelector =
-      "#search-content > div > shared-paging > div > div.paging-section > a.paging-next.ng-star-inserted";
-    const items: ScrapedItem[] = [];
+    const allProducts: Product[] = [];
+    const nextButtonSelector = ".paging-next:not(.disabled)";
 
     while (true) {
-      try {
-        await page.waitForSelector("wc-product-tile", {
-          visible: true,
-          timeout: 10000,
-        });
-      } catch (error) {
-        console.log("No product tiles found on this page. Ending scrape.");
-        break;
-      }
+      console.log(`Scraping page: ${page.url()}`);
+      await page.waitForSelector("wc-product-tile", {
+        visible: true,
+      });
 
       const productHandles = await page.$$("wc-product-tile");
-      for (const productHandle of productHandles) {
-        const itemData: ScrapedItem | null = await page.evaluate(
-          (tile: Element) => {
-            const shadow = tile.shadowRoot;
-            if (!shadow) {
-              return null;
-            }
+      const pageProducts = await Promise.all(
+        productHandles.map((handle) => scrapeProductTile(handle))
+      );
+      allProducts.push(...pageProducts);
+      console.log(
+        `Found ${pageProducts.length} products on this page. Total: ${allProducts.length}`
+      );
 
-            const getText = (selector: string): string | null => {
-              const element = shadow.querySelector(selector);
-              return element?.textContent?.trim() ?? null;
-            };
-
-            const getAttribute = (
-              selector: string,
-              attribute: string
-            ): string | null => {
-              const element = shadow.querySelector(selector);
-              return element?.getAttribute(attribute) ?? null;
-            };
-
-            const href = getAttribute(
-              "section > div > div.product-tile-group.left > div > div > a",
-              "href"
-            );
-            const title = getText("section .product-title-container a");
-            const price = getText("section .label-price-promotion .primary");
-            const originalPrice = getText(
-              "section .label-price-promotion .secondary .was-price"
-            );
-            const image = getAttribute(
-              "section > div > div.product-tile-group.left > div > div > a > img",
-              "src"
-            );
-            const productId = image
-              ? image.split("/").pop()?.split(".")[0] ?? null
-              : null;
-
-            return { title, price, originalPrice, image, productId, href };
-          },
-          productHandle
-        );
-
-        if (itemData && itemData.title && itemData.href) {
-          items.push(itemData);
-        }
-      }
-
-      const nextBtn = await page.$(nextBtnSelector);
-      if (!nextBtn) {
-        console.log("Reached last page – no more pages to scrape.");
+      const nextButton = await page.$(nextButtonSelector);
+      if (!nextButton) {
+        console.log("No more pages to scrape. Reached the last page.");
         break;
       }
 
-      console.log("Navigating to the next page...");
+      console.log("Clicking next page...");
       await Promise.all([
-        nextBtn.click(),
         page.waitForNavigation({ waitUntil: "networkidle2" }),
+        nextButton.click(),
       ]);
     }
 
-    console.log(`Scraped ${items.length} items successfully.`);
-    return items;
+    return allProducts;
   } catch (error) {
-    console.error("An error occurred during Woolworths scraping:", error);
-    throw new Error(
-      `Scraping failed: ${
-        error instanceof Error ? error.message : String(error)
-      }`
-    );
-  } 
-};
+    console.error("An error occurred during scraping:", error);
+    throw error;
+  } finally {
+    if (browser) {
+      console.log("Closing browser...");
+      await browser.close();
+    }
+  }
+}
