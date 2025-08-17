@@ -29,21 +29,21 @@ const Navbar = () => {
         <span className="font-bold text-lg">PCompare</span>
       </div>
       <nav className="space-x-10 text-lg font-semibold flex items-center">
-        <a href="#" className="hover:text-blue-600">
+        <Link to={"/"}  className="hover:text-blue-600">
           Home
-        </a>
-        <a href="#" className="hover:text-blue-600">
+        </Link>
+        <Link to={"/about-us"} className="hover:text-blue-600">
           About Us
-        </a>
-        <a href="#" className="hover:text-blue-600">
+        </Link>
+        <Link to={"/service"} className="hover:text-blue-600">
           Service
-        </a>
-        <a href="#" className="hover:text-blue-600">
+        </Link>
+        <Link to={"/Contact"} className="hover:text-blue-600">
           Contact Us
-        </a>
+        </Link>
         {authUser?.user ? (
           <div className="flex items-center space-x-3 cursor-pointer">
-            <div className="relative flex flex-col items-center mr-5">
+            <div className="relative flex flex-col items-center mr-8">
               <IoMdNotificationsOutline className="h-8 w-8 text-gray-600" />
               <span className="absolute -top-1 -right-2 bg-red-500 text-white text-xs font-bold rounded-full px-2 py-0.5">
                 10

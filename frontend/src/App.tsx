@@ -8,11 +8,9 @@ import OtpPage from './pages/OtpPage/OtpPage';
 import useAuthUser from './hooks/AuthHooks/useAuthUser';
 import AccountPage from './pages/AccountPage/AccountPage';
 import PersonalInfo from './pages/AccountPage/PersonalInfo';
-import ProductListPage from './pages/ProductPage/ProductListPage';
-import Settings from './pages/AccountPage/Settings';
-import ProductInfo from './pages/ProductPage/ProductInfo';
 
 import potato from './assets/potato.png';
+import Products from './pages/ProductPage/Products';
 
 
 function App() {
@@ -28,28 +26,9 @@ function App() {
         {/* <Route path="/" element={!isAuthenticated ? <LoginPage/>: <HomePage />} /> */}
         <Route path="/" element={<HomePage/>}/>
 
+        <Route path="/products" element={<Products/>} />
         <Route path="/account" element={<AccountPage/>} />
-        <Route path="/products" element={<ProductListPage/>} />
-        <Route
-          path="/products/info/1"
-          element={
-            <ProductInfo
-              name=""
-              inStock={false}
-              rating={0}
-              sku=""
-              price={0}
-              brand=""
-              images={[potato, potato, potato, potato]}
-            />
-          }
-        />
-
-
-
-
         <Route path="/account/personal-info" element={<PersonalInfo/>} />
-        <Route path="/account/settings" element={<Settings/>} />
         <Route path="/login" element={!isAuthenticated ? <LoginPage/>: <Navigate to={"/"}/>} />
         <Route path='/register' element={!isAuthenticated ? <RegisterPage/> : <Navigate to={"/"}/>}/>
         <Route path='/forgot-password' element={<ForgotPassword/>}/>
