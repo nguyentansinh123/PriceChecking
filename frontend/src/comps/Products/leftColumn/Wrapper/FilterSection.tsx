@@ -1,17 +1,37 @@
-import React from 'react'
-import { FaChevronUp } from 'react-icons/fa';
+import React, { useState } from "react";
+import { FaChevronUp } from "react-icons/fa";
 
-    const FilterSection: React.FC<{ title: string; children: React.ReactNode }> = ({
-        title,
-        children,
-    }) => (
-        <div className="py-6 border-b border-gray-200">
-            <div className="flex justify-between items-center mb-4">
-                <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
-                <FaChevronUp className="text-gray-500" />
-            </div>
-            <div>{children}</div>
-        </div>
-    );
+interface FilterSectionProps {
+  title: string;
+  children: React.ReactNode;
+  defaultOpen?: boolean;
+}
 
-export default FilterSection
+const FilterSection: React.FC<FilterSectionProps> = ({
+  title,
+  children,
+  defaultOpen = true,
+}) => {
+  const [isOpen, setIsOpen] = useState(defaultOpen);
+
+  const toggleOpen = () => setIsOpen(!isOpen);
+
+  return (
+    <div className="py-6 border-b border-gray-200">
+      <div
+        className="flex justify-between items-center cursor-pointer"
+        onClick={toggleOpen}
+      >
+        <h3 className="text-lg font-semibold text-gray-800">{title}</h3>
+        <FaChevronUp
+          className={`text-gray-500 transition-transform duration-300 ${
+            isOpen ? "" : "rotate-180"
+          }`}
+        />
+      </div>
+      {isOpen && <div className="mt-4">{children}</div>}
+    </div>
+  );
+};
+
+export default FilterSection;
