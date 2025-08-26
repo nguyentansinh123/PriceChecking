@@ -1,5 +1,5 @@
 import './App.css'
-import {Navigate, Routes, Route } from 'react-router-dom';
+import { Navigate, Routes, Route } from 'react-router-dom';
 import LoginPage from './pages/LoginPage/LoginPage';
 import HomePage from './pages/HomePage/HomePage';
 import RegisterPage from './pages/Register/RegisterPage';
@@ -8,34 +8,33 @@ import OtpPage from './pages/OtpPage/OtpPage';
 import useAuthUser from './hooks/AuthHooks/useAuthUser';
 import AccountPage from './pages/AccountPage/AccountPage';
 import PersonalInfo from './pages/AccountPage/PersonalInfo';
-
-import potato from './assets/potato.png';
 import Products from './pages/ProductPage/Products';
-
+import RetypePassword from './pages/FPPage/RetypePassword';
 
 function App() {
 
-  const {isLoading, authUser} = useAuthUser()
-  const isAuthenticated = Boolean(authUser?.user)  
-  console.log(authUser?.user)
-  console.log(isAuthenticated)
+    const { isLoading, authUser } = useAuthUser()
+    const isAuthenticated = Boolean(authUser?.user)
+    console.log(authUser?.user)
+    console.log(isAuthenticated)
 
-  return (
-    <>
-      <Routes>
-        {/* <Route path="/" element={!isAuthenticated ? <LoginPage/>: <HomePage />} /> */}
-        <Route path="/" element={<HomePage/>}/>
+    return (
+        <>
 
-        <Route path="/products" element={<Products/>} />
-        <Route path="/account" element={<AccountPage/>} />
-        <Route path="/account/personal-info" element={<PersonalInfo/>} />
-        <Route path="/login" element={!isAuthenticated ? <LoginPage/>: <Navigate to={"/"}/>} />
-        <Route path='/register' element={!isAuthenticated ? <RegisterPage/> : <Navigate to={"/"}/>}/>
-        <Route path='/forgot-password' element={<ForgotPassword/>}/>
-        <Route path='/otp' element={<OtpPage/>}/>
-      </Routes>
-    </>
-  )
+            <Routes>
+                {/* <Route path="/" element={!isAuthenticated ? <LoginPage/>: <HomePage />} /> */}
+                <Route path="/" element={<HomePage />} />
+                <Route path="/products" element={<Products />} />
+                <Route path="/account" element={<AccountPage />} />
+                <Route path="/account/personal-info" element={<PersonalInfo />} />
+                <Route path="/login" element={!isAuthenticated ? <LoginPage /> : <Navigate to={"/"} />} />
+                <Route path='/register' element={!isAuthenticated ? <RegisterPage /> : <Navigate to={"/"} />} />
+                <Route path='/forgot-password' element={<ForgotPassword />} />
+                <Route path='/otp' element={<OtpPage />} />
+                <Route path='/new-password' element={<RetypePassword />} />
+            </Routes>
+        </>
+    )
 }
 
 export default App
