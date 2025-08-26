@@ -16,11 +16,13 @@ export const logout = async (): Promise<AuthReturnType> => {
     return response.data
 }
 
+// Havent do this 
 export const sendverifyOtp = async (): Promise<AuthReturnType> => {
     const response = await axiosInstance.post("/auth/send-verify-otp")
     return response.data
 }
 
+// Havent do this 
 export const verifyEmail = async (otp: number): Promise<AuthReturnType> => {
     const response = await axiosInstance.post("/auth/verify-account", otp)
     return response.data
