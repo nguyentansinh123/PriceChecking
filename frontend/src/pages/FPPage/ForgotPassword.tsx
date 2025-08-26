@@ -3,6 +3,7 @@ import InputField from "@/comps/AuthCMTS/InputField";
 import SocialIcons from "@/comps/AuthCMTS/SocialIcons";
 import BtnLoader from "@/comps/loader/BtnLoader";
 import useSendResetMailOtp from "@/hooks/AuthHooks/useSendSignalmailOtp";
+import { useAuthStore } from "@/stores/authStore";
 import { useState } from "react";
 import { FaRegEnvelope } from "react-icons/fa";
 import { Link } from "react-router-dom";
@@ -10,9 +11,11 @@ import { Link } from "react-router-dom";
 const ForgotPassword = () => {
     const [data, setData] = useState({ email: "" });
     const { isPending, error, SendingResetMailOtp } = useSendResetMailOtp();
+    const { setEmail } = useAuthStore()
 
     const handleLogin = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
+        setEmail(data.email)
         SendingResetMailOtp(data)
     };
 

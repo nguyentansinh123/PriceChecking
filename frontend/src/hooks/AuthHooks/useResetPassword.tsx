@@ -25,4 +25,4 @@ const useResetPassword = () => {
     return { isPending, error, ResetPasswordFn: mutate }
 }
 
-export default useResetPassword()
+export default useResetPassword
