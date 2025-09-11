@@ -1,5 +1,7 @@
-2025/08/18-02:05:28.921 40eb Reusing MANIFEST /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Session Storage/MANIFEST-000001
-2025/08/18-02:05:28.922 40eb Recovering log #22
-2025/08/18-02:05:28.922 40eb Reusing old log /home/caffein/Imgonnadie/PriceChecking/backend/tmp/Default/Session Storage/000022.log 
-2025/08/18-02:05:52.405 40ec Level-0 table #26: started
-2025/08/18-02:05:52.408 40ec Level-0 table #26: 18529 bytes OK
+2025/09/12-02:15:12.116 f920 Reusing MANIFEST /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Session Storage/MANIFEST-000001
+2025/09/12-02:15:12.116 f920 Recovering log #14
+2025/09/12-02:15:12.117 f920 Level-0 table #17: started
+2025/09/12-02:15:12.121 f920 Level-0 table #17: 19668 bytes OK
+2025/09/12-02:15:12.122 f920 Delete type=0 #14
+2025/09/12-02:15:34.628 f9d1 Level-0 table #20: started
+2025/09/12-02:15:34.633 f9d1 Level-0 table #20: 14908 bytes OK
