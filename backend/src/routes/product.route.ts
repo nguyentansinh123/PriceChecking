@@ -7,7 +7,8 @@ import {
   getIGASingleProduct, 
   getWWhalfPrice, 
   getWWsingleProduct,
-  searchProducts
+  searchProducts,
+  getProducts
 } from "../controller/product.controller"
 
 export const router = express.Router()
@@ -21,3 +22,4 @@ router.get('/IGA/SpecialCatalog', getIGAhalfPrice)
 router.get('/WW/singleProduct', getWWsingleProduct)
 router.get('/WW/halfPrice', getWWhalfPrice)
 router.get('/search', searchProducts)
+router.get('/products', getProducts)

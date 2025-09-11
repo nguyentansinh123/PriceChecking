@@ -289,3 +289,14 @@ export const searchProducts = async (req: Request, res: Response) => {
   }
 };
 
+export const getProducts = async (req: Request, res: Response) => {
+  try {
+    const products = await Product.find();
+    
+    res.status(200).json(products);
+  } catch (error) {
+    console.error("Error fetching products:", error);
+    res.status(500).json({ error: "Failed to fetch products from database" });
+  }
+};
+
