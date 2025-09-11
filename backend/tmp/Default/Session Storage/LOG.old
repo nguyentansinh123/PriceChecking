@@ -1,19 +1,7 @@
-2025/09/12-02:48:59.083 1121c Reusing MANIFEST /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Session Storage/MANIFEST-000001
-2025/09/12-02:48:59.084 1121c Recovering log #34
-2025/09/12-02:48:59.084 1121c Level-0 table #37: started
-2025/09/12-02:48:59.086 1121c Level-0 table #37: 12792 bytes OK
-2025/09/12-02:48:59.087 1121c Recovering log #36
-2025/09/12-02:48:59.087 1121c Reusing old log /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Session Storage/000036.log 
-2025/09/12-02:48:59.088 1121c Delete type=0 #34
-2025/09/12-02:48:59.089 1121d Compacting 4@0 + 1@1 files
-2025/09/12-02:48:59.091 1121d Generated table #38@0: 523 keys, 19389 bytes
-2025/09/12-02:48:59.091 1121d Compacted 4@0 + 1@1 files => 19389 bytes
-2025/09/12-02:48:59.092 1121d compacted to: files[ 0 1 1 0 0 0 0 ]
-2025/09/12-02:48:59.093 1121d Delete type=2 #35
-2025/09/12-02:48:59.093 1121d Delete type=2 #30
-2025/09/12-02:48:59.093 1121d Delete type=2 #32
-2025/09/12-02:48:59.093 1121d Delete type=2 #37
-2025/09/12-02:48:59.093 1121d Delete type=2 #28
-2025/09/12-02:48:59.384 1121d Level-0 table #40: started
-2025/09/12-02:48:59.388 1121d Level-0 table #40: 6834 bytes OK
-2025/09/12-02:48:59.391 1121d Delete type=0 #36
+2025/09/12-02:56:16.995 115d6 Reusing MANIFEST /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Session Storage/MANIFEST-000001
+2025/09/12-02:56:16.996 115d6 Recovering log #39
+2025/09/12-02:56:16.997 115d6 Level-0 table #42: started
+2025/09/12-02:56:17.001 115d6 Level-0 table #42: 29231 bytes OK
+2025/09/12-02:56:17.003 115d6 Delete type=0 #39
+2025/09/12-02:56:41.209 115d7 Level-0 table #45: started
+2025/09/12-02:56:41.213 115d7 Level-0 table #45: 12195 bytes OK

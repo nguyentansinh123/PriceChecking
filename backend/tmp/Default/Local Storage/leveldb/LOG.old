@@ -1,13 +1,3 @@
-2025/09/12-02:48:59.033 1121c Reusing MANIFEST /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Local Storage/leveldb/MANIFEST-000001
-2025/09/12-02:48:59.039 1121c Recovering log #10
-2025/09/12-02:48:59.040 1121c Level-0 table #12: started
-2025/09/12-02:48:59.042 1121c Level-0 table #12: 21256 bytes OK
-2025/09/12-02:48:59.044 1121c Delete type=0 #10
-2025/09/12-02:48:59.045 1121d Compacting 4@0 + 0@1 files
-2025/09/12-02:48:59.049 1121d Generated table #14@0: 735 keys, 85134 bytes
-2025/09/12-02:48:59.049 1121d Compacted 4@0 + 0@1 files => 85134 bytes
-2025/09/12-02:48:59.050 1121d compacted to: files[ 0 1 0 0 0 0 0 ]
-2025/09/12-02:48:59.051 1121d Delete type=2 #9
-2025/09/12-02:48:59.051 1121d Delete type=2 #12
-2025/09/12-02:48:59.051 1121d Delete type=2 #6
-2025/09/12-02:48:59.051 1121d Delete type=2 #3
+2025/09/12-02:56:16.941 115d6 Reusing MANIFEST /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Local Storage/leveldb/MANIFEST-000001
+2025/09/12-02:56:16.949 115d6 Recovering log #13
+2025/09/12-02:56:16.950 115d6 Reusing old log /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Local Storage/leveldb/000013.log 
