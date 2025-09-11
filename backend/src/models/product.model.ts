@@ -28,6 +28,11 @@ const ProductSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  store: {
+    type: String,
+    enum: ['Coles', 'IGA', 'Woolworths', 'Other'],
+    default: 'Other'
+  },
 });
 
 const Product = mongoose.model("Product", ProductSchema);

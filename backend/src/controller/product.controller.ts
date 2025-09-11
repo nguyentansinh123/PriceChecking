@@ -10,7 +10,7 @@ import path from 'path';
 import { exec } from 'child_process';
 import util from 'util';
 import Product from "../models/product.model";
-import { ProductDetails } from "../types/product.types";
+import { ProductDetails, StoredProduct, PriceRecord } from "../types/product.types";
 
 const execPromise = util.promisify(exec);
 async function cleanupPuppeteerResources() {
@@ -31,16 +31,78 @@ async function cleanupPuppeteerResources() {
   }
 }
 
-function prepareProductForDB(data: any, source: string): any {
+function normalizeProductData(data: any, source: string): ProductDetails {
   return {
     title: data.title || "Unknown Product",
     price: data.price || "0.00",
     originalPrice: data.originalPrice || data.saveAmount || null,
     image: data.image || data.imageUrls?.[0] || "",
-    productId: data.productId || data.productCode || `${source}-${Date.now()}`,
+    productId: data.productId || data.productCode || `${source}-${Date.now()}-${Math.random().toString(36).substring(7)}`,
     href: data.href || null,
     source: source
   };
+}
+
+function prepareProductForDB(data: ProductDetails): StoredProduct {
+  const currentPrice = data.price;
+  const originalPrice = data.originalPrice;
+  
+  return {
+    title: data.title,
+    currentPrice: currentPrice,
+    priceHistory: [{ 
+      price: currentPrice,
+      timestamp: new Date()
+    }],
+    originalPriceHistory: originalPrice ? [{
+      price: originalPrice,
+      timestamp: new Date()
+    }] : [],
+    image: data.image,
+    productId: data.productId,
+    href: data.href,
+    source: data.source || "Unknown"
+  };
+}
+
+async function updateProductWithPriceHistory(existingProduct: any, newData: ProductDetails) {
+  const updates: any = {};
+  const currentTime = new Date();
+  
+  if (existingProduct.currentPrice !== newData.price && newData.price) {
+    updates.currentPrice = newData.price;
+    updates.$push = {
+      priceHistory: {
+        price: newData.price,
+        timestamp: currentTime
+      }
+    };
+  }
+  
+  if (newData.originalPrice && 
+      (!existingProduct.originalPriceHistory.length || 
+       existingProduct.originalPriceHistory[existingProduct.originalPriceHistory.length-1].price !== newData.originalPrice)) {
+    
+    if (!updates.$push) updates.$push = {};
+    updates.$push.originalPriceHistory = {
+      price: newData.originalPrice,
+      timestamp: currentTime
+    };
+  }
+  
+  updates.title = newData.title || existingProduct.title;
+  updates.image = newData.image || existingProduct.image;
+  updates.href = newData.href || existingProduct.href;
+  
+  if (Object.keys(updates).length > 0 || updates.$push) {
+    return await Product.findOneAndUpdate(
+      { productId: existingProduct.productId },
+      updates,
+      { new: true }
+    );
+  }
+  
+  return existingProduct;
 }
 
 export const getColesSingleProduct = async (req: Request, res: Response) => {
@@ -53,21 +115,27 @@ export const getColesSingleProduct = async (req: Request, res: Response) => {
   }
 
   try {
-    const result = await scrapeSingleProduct(url);
+    const rawResult = await scrapeSingleProduct(url);
     
-    if (result) {
-      const productToSave = prepareProductForDB(result, "Coles");
+    if (rawResult) {
+      const productData = normalizeProductData(rawResult, "Coles");
       
-      await Product.findOneAndUpdate(
-        { productId: productToSave.productId },
-        productToSave,
-        { upsert: true, new: true }
-      );
+      const existingProduct = await Product.findOne({ productId: productData.productId });
       
-      console.log(`Saved Coles product: ${result.title}`);
+      let savedProduct;
+      if (existingProduct) {
+        savedProduct = await updateProductWithPriceHistory(existingProduct, productData);
+        console.log(`Updated Coles product: ${productData.title}`);
+      } else {
+        const newProduct = prepareProductForDB(productData);
+        savedProduct = await Product.create(newProduct);
+        console.log(`Saved new Coles product: ${productData.title}`);
+      }
+      
+      res.status(200).json(savedProduct);
+    } else {
+      res.status(404).json({ error: "Product not found" });
     }
-    
-    res.status(200).json(result);
   } catch (error) {
     console.error("Scraping failed:", error);
     res.status(500).json({ error: "Failed to scrape product data." });
@@ -79,23 +147,31 @@ export const getColesSpecialCatalog = async (req: Request, res: Response) => {
     const results = await scrapeColesSpecials();
     
     if (Array.isArray(results)) {
-      const savePromises = results.map(async (product) => {
-        if (product) {
-          const productToSave = prepareProductForDB(product, "Coles");
-          
-          return Product.findOneAndUpdate(
-            { productId: productToSave.productId },
-            productToSave,
-            { upsert: true, new: true }
-          );
-        }
-      });
+      const processedProducts = [];
       
-      await Promise.all(savePromises.filter(p => p !== undefined));
-      console.log(`Saved ${results.length} Coles special products to MongoDB`);
+      for (const product of results) {
+        if (product) {
+          const productData = normalizeProductData(product, "Coles");
+          
+          const existingProduct = await Product.findOne({ productId: productData.productId });
+          
+          let savedProduct;
+          if (existingProduct) {
+            savedProduct = await updateProductWithPriceHistory(existingProduct, productData);
+          } else {
+            const newProduct = prepareProductForDB(productData);
+            savedProduct = await Product.create(newProduct);
+          }
+          
+          processedProducts.push(savedProduct);
+        }
+      }
+      
+      console.log(`Processed ${processedProducts.length} Coles special products`);
+      res.status(200).json(processedProducts);
+    } else {
+      res.status(200).json([]);
     }
-    
-    res.status(200).json(results);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to scrape Coles special catalog" });
@@ -106,28 +182,33 @@ export const getIGASingleProduct = async (req: Request, res: Response) => {
   const { url } = req.query;
 
   if (!url || typeof url !== "string") {
-    console.log(url);
     return res
       .status(400)
       .json({ error: "Product Url is required as a query parameter." });
   }
   
   try {
-    const result = await scrapeIgaSingleProduct(url);
+    const rawResult = await scrapeIgaSingleProduct(url);
     
-    if (result) {
-      const productToSave = prepareProductForDB(result, "IGA");
+    if (rawResult) {
+      const productData = normalizeProductData(rawResult, "IGA");
       
-      await Product.findOneAndUpdate(
-        { productId: productToSave.productId },
-        productToSave,
-        { upsert: true, new: true }
-      );
+      const existingProduct = await Product.findOne({ productId: productData.productId });
       
-      console.log(`Saved IGA product: ${result.title}`);
+      let savedProduct;
+      if (existingProduct) {
+        savedProduct = await updateProductWithPriceHistory(existingProduct, productData);
+        console.log(`Updated IGA product: ${productData.title}`);
+      } else {
+        const newProduct = prepareProductForDB(productData);
+        savedProduct = await Product.create(newProduct);
+        console.log(`Saved new IGA product: ${productData.title}`);
+      }
+      
+      res.status(200).json(savedProduct);
+    } else {
+      res.status(404).json({ error: "Product not found" });
     }
-    
-    res.status(200).json(result);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to scrape IGA product" });
@@ -139,23 +220,31 @@ export const getIGAhalfPrice = async (req: Request, res: Response) => {
     const results = await scrapeIgaHalfPrice();
     
     if (Array.isArray(results)) {
-      const savePromises = results.map(async (product) => {
-        if (product) {
-          const productToSave = prepareProductForDB(product, "IGA");
-          
-          return Product.findOneAndUpdate(
-            { productId: productToSave.productId },
-            productToSave,
-            { upsert: true, new: true }
-          );
-        }
-      });
+      const processedProducts = [];
       
-      await Promise.all(savePromises.filter(p => p !== undefined));
-      console.log(`Saved ${results.length} IGA half-price products to MongoDB`);
+      for (const product of results) {
+        if (product) {
+          const productData = normalizeProductData(product, "IGA");
+          
+          const existingProduct = await Product.findOne({ productId: productData.productId });
+          
+          let savedProduct;
+          if (existingProduct) {
+            savedProduct = await updateProductWithPriceHistory(existingProduct, productData);
+          } else {
+            const newProduct = prepareProductForDB(productData);
+            savedProduct = await Product.create(newProduct);
+          }
+          
+          processedProducts.push(savedProduct);
+        }
+      }
+      
+      console.log(`Processed ${processedProducts.length} IGA half-price products`);
+      res.status(200).json(processedProducts);
+    } else {
+      res.status(200).json([]);
     }
-    
-    res.status(200).json(results);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to scrape IGA half-price specials." });
@@ -172,21 +261,27 @@ export const getWWsingleProduct = async (req: Request, res: Response) => {
   }
   
   try {
-    const result = await scrapeWwSingleProduct(url);
+    const rawResult = await scrapeWwSingleProduct(url);
     
-    if (result) {
-      const productToSave = prepareProductForDB(result, "Woolworths");
+    if (rawResult) {
+      const productData = normalizeProductData(rawResult, "Woolworths");
       
-      await Product.findOneAndUpdate(
-        { productId: productToSave.productId },
-        productToSave,
-        { upsert: true, new: true }
-      );
+      const existingProduct = await Product.findOne({ productId: productData.productId });
       
-      console.log(`Saved Woolworths product: ${result.title}`);
+      let savedProduct;
+      if (existingProduct) {
+        savedProduct = await updateProductWithPriceHistory(existingProduct, productData);
+        console.log(`Updated Woolworths product: ${productData.title}`);
+      } else {
+        const newProduct = prepareProductForDB(productData);
+        savedProduct = await Product.create(newProduct);
+        console.log(`Saved new Woolworths product: ${productData.title}`);
+      }
+      
+      res.status(200).json(savedProduct);
+    } else {
+      res.status(404).json({ error: "Product not found" });
     }
-    
-    res.status(200).json(result);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to scrape Woolworths product" });
@@ -198,23 +293,31 @@ export const getWWhalfPrice = async (req: Request, res: Response) => {
     const results = await scrapeWwHalfPrice();
     
     if (Array.isArray(results)) {
-      const savePromises = results.map(async (product) => {
-        if (product) {
-          const productToSave = prepareProductForDB(product, "Woolworths");
-          
-          return Product.findOneAndUpdate(
-            { productId: productToSave.productId },
-            productToSave,
-            { upsert: true, new: true }
-          );
-        }
-      });
+      const processedProducts = [];
       
-      await Promise.all(savePromises.filter(p => p !== undefined));
-      console.log(`Saved ${results.length} Woolworths half-price products to MongoDB`);
+      for (const product of results) {
+        if (product) {
+          const productData = normalizeProductData(product, "Woolworths");
+          
+          const existingProduct = await Product.findOne({ productId: productData.productId });
+          
+          let savedProduct;
+          if (existingProduct) {
+            savedProduct = await updateProductWithPriceHistory(existingProduct, productData);
+          } else {
+            const newProduct = prepareProductForDB(productData);
+            savedProduct = await Product.create(newProduct);
+          }
+          
+          processedProducts.push(savedProduct);
+        }
+      }
+      
+      console.log(`Processed ${processedProducts.length} Woolworths half-price products`);
+      res.status(200).json(processedProducts);
+    } else {
+      res.status(200).json([]);
     }
-    
-    res.status(200).json(results);
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to scrape Woolworths half-price specials" });

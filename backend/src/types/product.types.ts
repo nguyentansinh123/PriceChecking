@@ -6,4 +6,5 @@ export interface ProductDetails {
   productId: string;
   href?: string;
   source?: string;
+  store?: 'Coles' | 'IGA' | 'Woolworths' | 'Other';
 }
