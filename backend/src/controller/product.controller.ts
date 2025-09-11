@@ -141,7 +141,13 @@ export const getIGASingleProduct = async (req: Request, res: Response) => {
 
 export const getIGAhalfPrice = async (req: Request, res: Response) => {
   try {
-    const results = await scrapeIgaHalfPrice();
+    
+    const scrapePromise = scrapeIgaHalfPrice();
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error("IGA scraping timed out after 120 seconds")), 260000);
+    });
+    
+    const results = await Promise.race([scrapePromise, timeoutPromise]) as any[];
     
     if (Array.isArray(results)) {
       const savePromises = results.map(async (product) => {
@@ -164,6 +170,8 @@ export const getIGAhalfPrice = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to scrape IGA half-price specials." });
+  } finally {
+    await cleanupPuppeteerResources();
   }
 };
 
@@ -178,7 +186,6 @@ export const getWWsingleProduct = async (req: Request, res: Response) => {
   
   try {
     const result = await scrapeWwSingleProduct(url);
-    // Just return the scraped data without storing in database
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
@@ -188,7 +195,13 @@ export const getWWsingleProduct = async (req: Request, res: Response) => {
 
 export const getWWhalfPrice = async (req: Request, res: Response) => {
   try {
-    const results = await scrapeWwHalfPrice();
+    
+    const scrapePromise = scrapeWwHalfPrice();
+    const timeoutPromise = new Promise((_, reject) => {
+      setTimeout(() => reject(new Error("Woolworths scraping timed out after 180 seconds")), 260000);
+    });
+    
+    const results = await Promise.race([scrapePromise, timeoutPromise]) as any[];
     
     if (Array.isArray(results)) {
       const savePromises = results.map(async (product) => {
@@ -211,6 +224,8 @@ export const getWWhalfPrice = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to scrape Woolworths half-price specials" });
+  } finally {
+    await cleanupPuppeteerResources();
   }
 };
 

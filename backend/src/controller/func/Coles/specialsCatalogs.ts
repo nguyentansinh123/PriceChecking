@@ -32,7 +32,7 @@ export const scrapeColesSpecials = async (): Promise<ScrapedItem[]> => {
     console.log("Running tests…");
 
     await page.goto(
-      "https://www.coles.com.au/on-special?pid=homepage_cat_explorer_specials&page=136",
+      "https://www.coles.com.au/on-special?pid=homepage_cat_explorer_specials&page=1",
       { waitUntil: "load" }
     );
     await setTimeout(2000);

@@ -15,10 +15,11 @@ export const scrapeIgaHalfPrice = async (): Promise<ScrapedItem[]> => {
       args: ["--no-sandbox", "--disable-setuid-sandbox"],
       defaultViewport: null,
       userDataDir: "./tmp",
+      headless: false,
     });
     const page = await browser.newPage();
 
-    await page.goto("https://www.igashop.com.au/specials/263", {
+    await page.goto("https://www.igashop.com.au/specials/1", {
       waitUntil: "load",
     });
 

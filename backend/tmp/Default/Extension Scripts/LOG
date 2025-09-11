@@ -1,3 +1,2 @@
-2025/09/12-03:36:12.033 12c2e Reusing MANIFEST /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Extension Scripts/MANIFEST-000001
-2025/09/12-03:36:12.033 12c2e Recovering log #3
-2025/09/12-03:36:12.034 12c2e Reusing old log /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Extension Scripts/000003.log 
+2025/09/12-06:08:50.624 153cb Creating DB /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Extension Scripts since it was missing.
+2025/09/12-06:08:50.628 153cb Reusing MANIFEST /home/caffein/Imagonnadie/PriceChecking/backend/tmp/Default/Extension Scripts/MANIFEST-000001

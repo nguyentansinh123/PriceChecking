@@ -32,7 +32,7 @@ export const scrapeHalfPriceColes = async (): Promise<ScrapedItem[]> => {
     console.log("Running tests…");
 
     await page.goto(
-      "https://www.coles.com.au/on-special?filter_Special=halfprice&pid=homepage_herotile_halfprice&page=23",
+      "https://www.coles.com.au/on-special?filter_Special=halfprice&pid=homepage_herotile_halfprice&page=1",
       { waitUntil: "load" },
     );
     await setTimeout(2000);
