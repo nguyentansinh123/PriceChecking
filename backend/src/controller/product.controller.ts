@@ -5,7 +5,9 @@ import { scrapeIgaSingleProduct } from "./func/IGA/singleProduct";
 import { scrapeIgaHalfPrice } from "./func/IGA/halfPrice";
 import { scrapeWwSingleProduct } from "./func/Ww/singleProduct";
 import { scrapeHalfPriceProducts as scrapeWwHalfPrice } from "./func/Ww/halfPrice";
-import { scrapeHalfPriceColes } from "./func/Coles/halfPrice"; // Add this import
+import { scrapeHalfPriceColes } from "./func/Coles/halfPrice";
+import { scrapeSearchColesProduct } from "./func/Coles/searchProduct"; 
+import { scrapeHalfPriceProducts as searchWwProducts } from "./func/Ww/SearchProduct"; 
 import { promises as fs } from 'fs';
 import path from 'path';
 import { exec } from 'child_process';
@@ -130,7 +132,6 @@ export const getIGASingleProduct = async (req: Request, res: Response) => {
   
   try {
     const result = await scrapeIgaSingleProduct(url);
-    // Just return the scraped data without storing in database
     res.status(200).json(result);
   } catch (error) {
     console.log(error);
@@ -210,6 +211,81 @@ export const getWWhalfPrice = async (req: Request, res: Response) => {
   } catch (error) {
     console.log(error);
     res.status(500).json({ error: "Failed to scrape Woolworths half-price specials" });
+  }
+};
+
+export const searchProducts = async (req: Request, res: Response) => {
+  const { query, store } = req.query;
+
+  if (!query || typeof query !== "string") {
+    return res
+      .status(400)
+      .json({ error: "Search query is required as a query parameter." });
+  }
+
+  try {
+    let results: any[] = [];
+    const promises = [];
+    
+    if (!store || store === "coles") {
+      console.log(`Searching Coles for: ${query}`);
+      const colesPromise = Promise.race<any[]>([
+        scrapeSearchColesProduct(query),
+        new Promise<any[]>((resolve) => setTimeout(() => {
+          console.log('Coles search timeout reached (30 seconds)');
+          resolve([]); 
+        }, 30000))
+      ]).then((colesResults) => {
+        if (Array.isArray(colesResults) && colesResults.length > 0) {
+          results = [
+            ...results, 
+            ...colesResults.map(product => ({ 
+              ...product, 
+              source: "Coles", 
+              store: "Coles" 
+            }))
+          ];
+          console.log(`Found ${colesResults.length} products from Coles`);
+        }
+      });
+      
+      promises.push(colesPromise);
+    }
+
+    if (!store || store === "woolworths") {
+      console.log(`Searching Woolworths for: ${query}`);
+      const wwPromise = Promise.race<any[]>([
+        searchWwProducts(query),
+        new Promise<any[]>((resolve) => setTimeout(() => {
+          console.log('Woolworths search timeout reached (30 seconds)');
+          resolve([]);
+        }, 30000))
+      ]).then((wwResults) => {
+        if (Array.isArray(wwResults) && wwResults.length > 0) {
+          results = [
+            ...results, 
+            ...wwResults.map(product => ({ 
+              ...product, 
+              source: "Woolworths", 
+              store: "Woolworths" 
+            }))
+          ];
+          console.log(`Found ${wwResults.length} products from Woolworths`);
+        }
+      });
+      
+      promises.push(wwPromise);
+    }
+
+    await Promise.all(promises);
+    
+    console.log(`Total: Found ${results.length} products in search results`);
+    res.status(200).json(results);
+  } catch (error) {
+    console.error("Search error:", error);
+    res.status(500).json({ error: "Failed to search for products" });
+  } finally {
+    await cleanupPuppeteerResources();
   }
 };
 
