@@ -18,7 +18,7 @@ interface ProductCardProps {
 const storeLogos = {
   coles:
     "https://imgs.search.brave.com/zgP92XC8PM8FSF2OlJGLdA9d-tpBYsc_1bZ8kwHfiqk/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly8xMDAw/bG9nb3MubmV0L3dw/LWNvbnRlbnQvdXBs/b2Fkcy8yMDIxLzA4/L0NvbGVzLUxvZ28t/NTAweDMxNC5wbmc",
-  aldi: "https://imgs.search.brave.com/lC5er8NdlijQEiBa-NPNoacSncCV4iEvmqGtw8E6Syw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9iYW5u/ZXIyLmNsZWFucG5n/LmNvbS8yMDE4MDgw/OS9rd3AvYmU3MTkw/MTIzNGI3OTJkZjkx/MDEzMzUyMjM2MjE4/ZjQud2VicA",
+  iga: "https://imgs.search.brave.com/lC5er8NdlijQEiBa-NPNoacSncCV4iEvmqGtw8E6Syw/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly9iYW5u/ZXIyLmNsZWFucG5n/LmNvbS8yMDE4MDgw/OS9rd3AvYmU3MTkw/MTIzNGI3OTJkZjkx/MDEzMzUyMjM2MjE4/ZjQud2VicA",
   woolworths:
     "https://imgs.search.brave.com/0sl_tVUvc2z9jBnxcky5JGL0VdRodfUnZnqXVJJ_7Dc/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly93b29s/d29ydGhzZ3JvdXAu/c2NlbmU3LmNvbS9p/cy9pbWFnZS93b29s/d29ydGhzZ3JvdXBs/dGQvd29vbHdvcnRo/c19uel9sb2dvP3Rz/PTE3MzM5NjY2NzU2/MjcmZHByPW9mZg",
 };

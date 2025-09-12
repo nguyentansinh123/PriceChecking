@@ -306,12 +306,34 @@ export const searchProducts = async (req: Request, res: Response) => {
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = await Product.find();
+    const page = parseInt(req.query.page as string) || 1;
+    const limit = parseInt(req.query.limit as string) || 10;
+    const skip = (page - 1) * limit;
     
-    res.status(200).json(products);
+    const products = await Product.find()
+      .skip(skip)
+      .limit(limit)
+      .lean();
+    
+    const total = await Product.countDocuments();
+    
+    res.status(200).json({
+      success: true,
+      message: "Products retrieved successfully",
+      products,
+      pagination: {
+        totalProducts: total,
+        currentPage: page,
+        totalPages: Math.ceil(total / limit),
+        limit
+      }
+    });
   } catch (error) {
     console.error("Error fetching products:", error);
-    res.status(500).json({ error: "Failed to fetch products from database" });
+    res.status(500).json({ 
+      success: false,
+      message: "Failed to fetch products from database" 
+    });
   }
 };
 
